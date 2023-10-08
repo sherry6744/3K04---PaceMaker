@@ -3,8 +3,6 @@
 # Please install Pillow with the following commands in terminal
 # python -m pip install --upgrade pip
 # python -m pip install --upgrade Pillow
-# Change path on line 30 to match destination of the 
-# pacemaker image download location on your personal computer
 
 import tkinter as tk
 from PIL import ImageTk, Image
@@ -36,72 +34,65 @@ loginPage.geometry('%dx%d+%d+%d' % (widthApp, heightApp, x_axisCentre, y_axisCen
 loginPage.grid_rowconfigure(0, weight=1)
 loginPage.grid_columnconfigure(0, weight=1)
 
+def get_pass():
+    print(inputPass.get())
+
 ######## LAYOUT #########
 
 # Main frame | Contains Title, Login prompt, and User/Pass grid
-frame1 = tk.Frame(loginPage,width=600, height=100)
-frame1.grid(row=0,  column=0) #Needed to show
-frame1.grid_rowconfigure(0, weight=1)
-frame1.grid_columnconfigure(0, weight=1)
-
-# Embedded Frame for User/Pass
-frame2 = tk.Frame(frame1,width=600, height=50)
-frame2.grid(row=4,  column=0, pady = 5) #Needed to show
-frame2.grid_rowconfigure(0, weight=1)
-frame2.grid_columnconfigure(0, weight=1)
-
-# Embedded Frame for New User label/button
-frame3 = tk.Frame(frame1,width=600, height=50)
-frame3.grid(row=7,  column=0, padx= 10, pady = 10) #Needed to show
-frame3.grid_rowconfigure(0, weight=1)
-frame3.grid_columnconfigure(0, weight=1)
+frame_welcome = tk.Frame(loginPage,width=600, height=100)
+frame_welcome.grid(row=0,  column=0) #Needed to show
+frame_welcome.grid_rowconfigure(0, weight=1)
+frame_welcome.grid_columnconfigure(0, weight=1)
+frame_welcome.grid_rowconfigure(1, weight=1)
+frame_welcome.grid_columnconfigure(1, weight=1)
 
 # Welcome Label
-welc = tk.Label(frame1, text = "Welcome to PaceMaker Desktop!", font=('Montserrat',24), anchor='center')
-welc.grid(row=0,column=0)
+welc = tk.Label(frame_welcome, text = "Welcome to PaceMaker Desktop!", font=('Montserrat',24), anchor='center')
+welc.grid(row=0,column=0, columnspan=2)
 
 # Heart icon
-iconLabel = tk.Label(frame1, image = heartIcon)
-iconLabel.grid(row=1,column=0)
+iconLabel = tk.Label(frame_welcome, image = heartIcon)
+iconLabel.grid(row=1,column=0, columnspan=2)
 
 # Login info prompt
-entryMsg = tk.Label(frame1, text = "Please enter login information:", font=('Montserrat',12), anchor='center')
-entryMsg.grid(row=2,column=0)
+entryMsg = tk.Label(frame_welcome, text = "Please enter login information:", font=('Montserrat',12), anchor='center')
+entryMsg.grid(row=2,column=0,pady = 2, columnspan=2)
 
 # Username label
-userLabel = tk.Label(frame2, text = "Username:", font=('Montserrat',12), anchor='center')
-userLabel.grid(row=0,column=0)
+userLabel = tk.Label(frame_welcome, text = "Username:", font=('Montserrat',12), anchor='center')
+userLabel.grid(row=3,column=0, sticky= tk.E, padx = 12)
 
 # Username Text Field Input from User --> Add Functionality
-inputUser = tk.Text(frame2, height = 1, width = 20) 
-inputUser.grid(row=0,column=1)
+inputUser = tk.Text(frame_welcome, height = 1, width = 15) 
+inputUser.grid(row=3,column=1, sticky= tk.W)
 
 # Password Label 
-passLabel = tk.Label(frame2, text = "Password:", font=('Montserrat',12), anchor='center')
-passLabel.grid(row=1,column=0)
+passLabel = tk.Label(frame_welcome, text = "Password:", font=('Montserrat',12))
+passLabel.grid(row=4,column=0, sticky= tk.E, padx = 12)
 
 # Password Text Field Input from User --> Add Functionality
-inputPass = tk.Text(frame2, height = 1, width = 20) 
-inputPass.grid(row=1,column=1)
+inputPass = tk.Entry(frame_welcome, width = 20, show='*') 
+inputPass.grid(row=4,column=1, sticky= tk.W)
 
 # Login Button --> Add Functionality
-loginButton = tk.Button(frame1,text = "Login", font=('Montserrat',12), anchor='center')
-loginButton.grid(row=5,column=0,pady = 5)
+loginButton = tk.Button(frame_welcome,text = "Login", font=('Montserrat',12),command= get_pass, anchor='center')
+loginButton.grid(row=5,column=0,pady = 10, columnspan=2)
 
 # Line Break
-newUser = tk.Label(frame1,text = "____________________________________________", font=('Montserrat',12), anchor='center')
-newUser.grid(row=6,column=0)
+newUser = tk.Label(frame_welcome,text = "___________________________________________________", font=('Montserrat',12), anchor='center')
+newUser.grid(row=6,column=0, columnspan=2)
 
 # New User prompt
-newUser = tk.Label(frame3,text = "Need to create a new user?", font=('Montserrat',12), anchor='center')
-newUser.grid(row=0,column=0)
+newUser = tk.Label(frame_welcome,text = "Need to create a new user?", font=('Montserrat',12), anchor='center')
+newUser.grid(row=8,column=0, pady = 10, columnspan=2)
 
 # New User button --> Add functionality
-newUser = tk.Button(frame3,text = "Create New User", font=('Montserrat',10), anchor='center')
-newUser.grid(row=0,column=1, padx = 5)
+newUser = tk.Button(frame_welcome,text = "Create New User", font=('Montserrat',10), anchor='center')
+newUser.grid(row=9,column=0, columnspan=2)
 
-# New User button --> Add functionality
-slotLabel = tk.Label(frame1, text = "New Patient Slots Available: 10", font=('Montserrat',10), anchor='center',fg='#228B22')
-slotLabel.grid(row=8,column=0, pady = 10)
+# Update when new user is made (decrease count please!)
+slotLabel = tk.Label(frame_welcome, text = "New Patient Slots Available: 10", font=('Montserrat',10), anchor='center',fg='#228B22')
+slotLabel.grid(row=10,column=0, pady = 10, columnspan=2)
 
 loginPage.mainloop()
