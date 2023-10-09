@@ -3,6 +3,7 @@
 # Please install Pillow with the following commands in terminal
 # python -m pip install --upgrade pip
 # python -m pip install --upgrade Pillow
+# Download pacemaker.jpg from github and change directory in line 72 
 
 import tkinter as tk
 #from tkinter import tkk
