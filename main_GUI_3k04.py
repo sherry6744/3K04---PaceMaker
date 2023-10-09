@@ -6,6 +6,7 @@
 # Download pacemaker.jpg from github and change directory in line 72 
 
 import tkinter as tk
+from tkinter import messagebox
 #from tkinter import tkk
 from PIL import ImageTk, Image
 
@@ -149,26 +150,55 @@ class user_page(tk.Frame):
         userLabelnew.grid(row=2,column=0)
 
         # Password Text Field Input from User --> Add Functionality
-        inputUsernew = tk.Text(self, height = 1, width = 20) 
-        inputUsernew.grid(row=2,column=1)
+        inputPassnew = tk.Text(self, height = 1, width = 20) 
+        inputPassnew.grid(row=2,column=1)
 
         # Verify Password Label
         userLabelnew = tk.Label(self, text = "Verify Password:", font=('Montserrat',12), anchor="center")
         userLabelnew.grid(row=3,column=0, padx=20)
 
         # Verify Password Text Field Input from User --> Add Functionality
-        inputUsernew = tk.Text(self, height = 1, width = 20) 
-        inputUsernew.grid(row=3,column=1)
+        inputPassVal = tk.Text(self, height = 1, width = 20) 
+        inputPassVal.grid(row=3,column=1)
+        value=inputPassVal.get("1.0","end-1c")
+        
 
         # New User button --> Add functionality to create user once correct data is entered
-        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        #newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : self.createUser(inputUsernew.get("1.0","end-1c"),inputPassnew.get("1.0","end-1c"),inputPassVal.get("1.0","end-1c")))
         newUser.grid(row=4,column=1, pady = 20)
 
         # Return to home screen --> Add functionality
-        newUser = tk.Button(self,text = "Cancel", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        newUser = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
         newUser.grid(row=4,column=0, pady = 20)
+    
+    def createUser(self,userInput,passInput,passCheck):
+        # Used to verify if a user should be created.
+        # Need to update with:
+        # 1) New input parameter which is actual list of patient usernames 
+        # 2) Creation of users as objects & appending users/passwords to 
+        # lists that are accessible by *all* frames. Will likely need to create
+        # function for that in mainWindow
         
-#### USER PAGE ####
+        userList = ["John", "Isaac", "Sally"] #Test userlist
+        validUser = userInput
+        validPass = passInput
+        checkPass = passCheck
+        uCheck = True
+        
+        for u in userList:
+            if (u == validUser):
+                uCheck = False
+        if (validPass != checkPass):
+            messagebox.showinfo(title="Invalid Password", message="Invalid password, please verify password entries are identical.")
+        if (uCheck == False):
+            messagebox.showinfo(title="Invalid User", message="This username is already taken, please create another username.")
+        elif (validPass == checkPass and uCheck == True):
+            messagebox.showinfo(title= "New User Successfully Created.", message="New user was successfully created. Please verify login in Welcome Window.")
+            #Update logic to actually create patient
+            
+            
+#### MAIN PAGE ####
 class main_page(tk.Frame):
     # parent is needed for all widgets that are not the root tkinter window
     # controller allows for low coupling, frames can be accessed 
@@ -179,5 +209,14 @@ class main_page(tk.Frame):
         detailLabel = tk.Label(self, text = "<Main Page>", font=('Montserrat',18), anchor='center')
         detailLabel.grid(row=0,column=0,columnspan=2)
         
-pacemakerApp = mainWindow()
-pacemakerApp.mainloop()
+class Patient:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        
+def main():
+    pacemakerApp = mainWindow()
+    pacemakerApp.mainloop()
+    
+if __name__ == '__main__':
+    main()
