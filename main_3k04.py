@@ -58,8 +58,25 @@ class mainWindow(tk.Tk):
         
     # Displays the desired page    
     def display_page(self,display):
+        self.update()
+        self.update_idletasks()
         page = self.pages[display] #Set page to chosen value of display
         page.tkraise() #Raise the frame to the top of the window
+    
+    def on_login(self,state_status):
+        if (state_status == 0):
+            messagebox.showinfo(title="Invalid Login", message="Username is incorrect.")
+        elif (state_status == 1):
+            messagebox.showinfo(title="Invalid Login", message="Password is incorrect.")
+        elif (state_status == 2):       
+            self.display_page(main_page)
+            
+    def on_create(self,max_val):
+        print(max_val)
+        if (max_val == 0):
+            messagebox.showinfo(title="Error", message="Max patients reached. Limit of 10 patients.")
+        else:
+            self.display_page(user_page)
     
 #### WELCOME PAGE ####
 class welcome_page(tk.Frame):
@@ -103,9 +120,12 @@ class welcome_page(tk.Frame):
         # Password Text Field Input from User --> Add Functionality
         inputPass = tk.Entry(self, width = 20, show='*') 
         inputPass.grid(row=4,column=1, sticky= tk.W)
+        #print(inputPass.get())
 
         # Login Button --> Add Functionality
-        loginButton = tk.Button(self,text = "Login", font=('Montserrat',12), anchor='center',command=lambda : controller.display_page(main_page))
+        #loginButton = tk.Button(self,text = "Login", font=('Montserrat',12), anchor='center',command=lambda : self.loginState(patient.loginUser(inputUser.get("1.0","end-1c"),inputPass.get())))
+        #loginButton = tk.Button(self,text = "Login", font=('Montserrat',12), anchor='center',command=lambda : print(type(inputPass.get())))
+        loginButton = tk.Button(self,text = "Login", font=('Montserrat',12), anchor='center',command= lambda : controller.on_login(patient.loginUser(inputUser.get("1.0","end-1c"),inputPass.get())))
         loginButton.grid(row=5,column=0,pady = 10, columnspan=2)
 
         # Line Break
@@ -117,13 +137,17 @@ class welcome_page(tk.Frame):
         newUser.grid(row=8,column=0, pady = 10, columnspan=2)
 
         # New User button --> Add functionality
-        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(user_page))
+        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : controller.on_create(patient.availUsers()))
         newUser.grid(row=9,column=0, columnspan=2)
 
         # Update when new user is made (decrease count please!)
-        slotLabel = tk.Label(self, text = "New Patient Slots Available: 10", font=('Montserrat',10), anchor='center',fg='#228B22')
+        slotLabel = tk.Button(self, text = "New Patient Slots Available", font=('Montserrat',10), anchor='center',fg='#228B22',command=lambda : self.checkAvail())
         slotLabel.grid(row=10,column=0, pady = 10, columnspan=2)
-
+        
+    def checkAvail(self):
+        messagebox.showinfo(title="Available Patient Slots", message="There are currently " + str(patient.availUsers()) + " patient slots.")
+        
+    
 #### USER PAGE ####
 class user_page(tk.Frame):
     # parent is needed for all widgets that are not the root tkinter window
@@ -167,41 +191,28 @@ class user_page(tk.Frame):
 
         # New User button --> Add functionality to create user once correct data is entered
         #newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
-        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : self.createUser(inputUsernew.get("1.0","end-1c"),inputPassnew.get("1.0","end-1c"),inputPassVal.get("1.0","end-1c"),[]))
+        newUser = tk.Button(self,text = "Create New User", font=('Montserrat',10), anchor='center',command=lambda : self.createUser(inputUsernew.get("1.0","end-1c"),inputPassnew.get("1.0","end-1c"),inputPassVal.get("1.0","end-1c")))
         newUser.grid(row=4,column=1, pady = 20)
 
         # Return to home screen --> Add functionality
         newUser = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
         newUser.grid(row=4,column=0, pady = 20)
     
-    def createUser(self,userInput,passInput,passCheck, patientData):
-        # Used to verify if a user should be created.
-        # Need to update with:
-        # 1) New input parameter which is actual list of patient usernames 
-        # 2) Creation of users as objects & appending users/passwords to 
-        # lists that are accessible by *all* frames. Will likely need to create
-        # function for that in mainWindow
+    def createUser(self,userInput,passInput,passCheck):
         
-        userList = patientData #Userlist
         validUser = userInput
         validPass = passInput
         checkPass = passCheck
         uCheck = True
-        newPatient = Patient("","")
+        newPatient = Patient(validUser,validPass)
         
-        for u in userList:
-            if (u == validUser):
-                uCheck = False
         if (validPass != checkPass):
             messagebox.showinfo(title="Invalid Password", message="Invalid password, please verify password entries are identical.")
-        if (uCheck == False):
+        if (patient.uniqueUser(newPatient) == False):
             messagebox.showinfo(title="Invalid User", message="This username is already taken, please create another username.")
         elif (validPass == checkPass and uCheck == True):
-            #Create new patient
-            newPatient = Patient(validUser,validPass)
+            #Add new patient
             patient.addPatient(newPatient)
-            #userList.append(newPatient)
-            #print(userList[(0)])
             messagebox.showinfo(title= "New User Successfully Created.", message="New user " + validUser + " was successfully created. Please verify login in Welcome Window.")
             
             
@@ -216,6 +227,9 @@ class main_page(tk.Frame):
         
         detailLabel = tk.Label(self, text = "<Main Page>", font=('Montserrat',18), anchor='center')
         detailLabel.grid(row=0,column=0,columnspan=2)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        backButton.grid(row=1,column=0, pady = 20)
         
 def main():
     patient.createPD()
