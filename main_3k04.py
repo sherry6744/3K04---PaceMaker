@@ -3,11 +3,14 @@
 # Please install Pillow with the following commands in terminal
 # python -m pip install --upgrade pip
 # python -m pip install --upgrade Pillow
+# pip install tkcalendar
 # Download pacemaker.jpg from github and change directory in line 72 
 
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from datetime import datetime
+from tkcalendar import DateEntry
 from PIL import ImageTk, Image
 from patient import Patient
 import patient
@@ -50,10 +53,10 @@ class mainWindow(tk.Tk):
         # Must initialize all the pages first
         #for pageNum in (welcome_page,user_page,main_page):
         
-        for pageNum in (welcome_page,user_page,main_page,AOO_page,AAI_page,VOO_page,VVI_page):
+        for pageNum in (welcome_page,user_page,main_page,AOO_page,AAI_page,VOO_page,VVI_page,set_date_time):
             page = pageNum(base,self)
             self.pages[pageNum] = page
-            page.grid(row = 0, column = 0, stick="nsew")
+            page.grid(row = 0, column = 0, sticky="nsew")
         
         #displays welcome page first
         self.display_page(welcome_page) #displays welcome page first
@@ -79,6 +82,12 @@ class mainWindow(tk.Tk):
             messagebox.showinfo(title="Error", message="Max patients reached. Limit of 10 patients.")
         else:
             self.display_page(user_page)
+        
+    def logTime(self):
+        timeSave = datetime.now()
+        messagebox.showinfo(title="Updated Time.", message="Time logged: " + str(timeSave))
+        print(timeSave)
+        # Can be logged with future patient reports.
     
 #### WELCOME PAGE ####
 class welcome_page(tk.Frame):
@@ -92,6 +101,8 @@ class welcome_page(tk.Frame):
         
         # Import Media
         #image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\Mcmaster\Sem 5\3K04\3K04---PaceMaker\pacemaker.png") #Fix to make locally stored in same location as patient info
+        image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
+        
         resize_img = image1.resize((100,100))
         self.photo = ImageTk.PhotoImage(resize_img)
 
@@ -234,7 +245,7 @@ class main_page(tk.Frame):
         aboutButton = tk.Button(self,text = "About", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         aboutButton.grid(row=1,column=0, pady = 20)
         
-        set_timeButton = tk.Button(self,text = "Set Date and Time", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        set_timeButton = tk.Button(self,text = "Set Date and Time", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(set_date_time))
         set_timeButton.grid(row=2,column=0, pady = 20)
         
         end_telementryButton = tk.Button(self,text = "End Telemetry", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
@@ -405,7 +416,25 @@ class VVI_page(tk.Frame):
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=2,column=0, pady = 10)
 
-
+class set_date_time(tk.Frame):
+    
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        dateSet = tk.Label(self, text = "Calendar View:", font=('Montserrat',18), anchor='center',)
+        dateSet.grid(row=0,column=0,columnspan=2, sticky="w")
+        cal=DateEntry(self,selectmode='day')
+        cal.grid(row=1,column=0,padx=15)
+        
+        timeSet = tk.Label(self, text = "Current Time:", font=('Montserrat',18), anchor='center',)
+        timeSet.grid(row=2,column=0,columnspan=2, sticky="w")
+        
+        saveButton = tk.Button(self,text = "Log Current Time", font=('Montserrat',10), anchor='center',command=lambda : controller.logTime())
+        saveButton.grid(row=3,column=0, pady = 10)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=3,column=1, pady = 10, padx = 10)
+        
 
 def main():
     patient.createPD()
