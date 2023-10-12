@@ -91,7 +91,7 @@ class welcome_page(tk.Frame):
         # Main frame | Contains Title, Login prompt, and User/Pass grid
         
         # Import Media
-        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\Mcmaster\Sem 5\3K04\3K04---PaceMaker\pacemaker.png") #Fix to make locally stored in same location as patient info
+        #image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\Mcmaster\Sem 5\3K04\3K04---PaceMaker\pacemaker.png") #Fix to make locally stored in same location as patient info
         resize_img = image1.resize((100,100))
         self.photo = ImageTk.PhotoImage(resize_img)
 
@@ -148,7 +148,7 @@ class welcome_page(tk.Frame):
         
     def checkAvail(self):
         messagebox.showinfo(title="Available Patient Slots", message="There are currently " + str(patient.availUsers()) + " patient slots.")
-        
+     
     
 #### USER PAGE ####
 class user_page(tk.Frame):
@@ -259,29 +259,33 @@ class main_page(tk.Frame):
         def parameter(e):
             if dropdown.get() == 'AOO':    
                 
-                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AOO_page))
-                backButton.grid(row=1,column=3, pady = 20)
+                openButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AOO_page))
+                openButton.grid(row=1,column=3, pady = 20)
+                print(openButton)
                      
             elif dropdown.get() == 'AAI':
                 
-                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AAI_page))
-                backButton.grid(row=1,column=3, pady = 20)
+                openButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AAI_page))
+                openButton.grid(row=1,column=3, pady = 20)
                
             elif dropdown.get() == 'VOO':
 
-               backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VOO_page))
-               backButton.grid(row=1,column=3, pady = 20)
+               openButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VOO_page))
+               openButton.grid(row=1,column=3, pady = 20)
+               
                  
             elif dropdown.get() == 'VVI':
                 
-                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VVI_page))
-                backButton.grid(row=1,column=3, pady = 20)
+                openButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VVI_page))
+                openButton.grid(row=1,column=3, pady = 20)
+                
                 
             else:
                 pass
             
         #bind the dropdown menu to parameter function
         dropdown.bind("<<ComboboxSelected>>",parameter)
+        
                 
 
 class AOO_page(tk.Frame):
@@ -302,11 +306,13 @@ class AOO_page(tk.Frame):
         atrial_pulse_val = atrial_pulse(self)
         
         #no functionality
-        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : print({'LRL':lower_rate_limit_val,'URL':upper_rate_limit_val,'AA':atrial_amplitude_val,'AP':atrial_pulse_val}))
         saveButton.grid(row=1,column=0, pady = 10)
         
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=2,column=0, pady = 10)
+        
+       # return {'LRL':lower_rate_limit_val,'URL':upper_rate_limit_val,'AA':atrial_amplitude_val,'AP':atrial_pulse_val}
 
         
 class VOO_page(tk.Frame):
@@ -398,6 +404,7 @@ class VVI_page(tk.Frame):
         
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=2,column=0, pady = 10)
+
 
 
 def main():
