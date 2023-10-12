@@ -11,6 +11,7 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 from patient import Patient
 import patient
+from parameters import *
 import csv
 
 ### MAIN WINDOW CLASS ###
@@ -49,7 +50,7 @@ class mainWindow(tk.Tk):
         # Must initialize all the pages first
         #for pageNum in (welcome_page,user_page,main_page):
         
-        for pageNum in (welcome_page,user_page,main_page,parameters_page):
+        for pageNum in (welcome_page,user_page,main_page,AOO_page,AAI_page,VOO_page,VVI_page):
             page = pageNum(base,self)
             self.pages[pageNum] = page
             page.grid(row = 0, column = 0, stick="nsew")
@@ -196,8 +197,8 @@ class user_page(tk.Frame):
         newUser.grid(row=4,column=1, pady = 20)
 
         # Return to home screen --> Add functionality
-        newUser = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
-        newUser.grid(row=4,column=0, pady = 20)
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        backButton.grid(row=4,column=0, pady = 20)
     
     def createUser(self,userInput,passInput,passCheck):
         
@@ -227,294 +228,178 @@ class main_page(tk.Frame):
         
         tk.Frame.__init__(self,parent, height=500,width=600)
         
-        detailLabel = tk.Label(self, text = "<Main Page>", font=('Montserrat',18), anchor='center')
+        detailLabel = tk.Label(self, text = "Main Menu", font=('Montserrat',18), anchor='center',)
         detailLabel.grid(row=0,column=0,columnspan=2)
         
-        paramButton = tk.Button(self,text = "next", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(parameters_page))
-        paramButton.grid(row=1,column=0, pady = 20)
+        aboutButton = tk.Button(self,text = "About", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        aboutButton.grid(row=1,column=0, pady = 20)
         
-        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
-        backButton.grid(row=2,column=0, pady = 20)
+        set_timeButton = tk.Button(self,text = "Set Date and Time", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        set_timeButton.grid(row=2,column=0, pady = 20)
         
-
-class parameters_page(tk.Frame):
-    # parent is needed for all widgets that are not the root tkinter window
-    # controller allows for low coupling, frames can be accessed 
-    # with accessing controller instead of frame directly
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent, height=500,width=600)
+        end_telementryButton = tk.Button(self,text = "End Telemetry", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        end_telementryButton .grid(row=3,column=0, pady = 20)
         
-        heading1 = tk.Label(self,text = 'Programmable Parameters', font = ('Montserrat',18),anchor = 'center')
-        heading1.grid(row = 0, column = 0,columnspan = 2,pady = 20)
+        newpatientButton = tk.Button(self,text = "New Patient", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        newpatientButton .grid(row=4,column=0, pady = 20)
         
-        # parameter functions
-        def lower_rate_limit(self):
-            #lower rate limit label
-            lower_rate = tk.Label(self,text = 'Lower Rate Limit', font = ('Montserrat',12),anchor = 'center')
-            lower_rate.grid(row = 1, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #lower rate limit field input
-            lower_rate_read = ttk.Combobox(self, width = 10) 
-            lower_rate_read.grid(column = 2, row = 1,sticky ='W')
-            lower_rate_read['values'] = (30,35,40,45,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,
-                                         80,81,82,83,84,85,86,87,88,89,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175) 
-            lower_rate_read.current(0)
-            return lower_rate_read.get()
+        border = tk.Label(self,text = "|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|", font=('Montserrat',12), anchor='center')
+        border.grid(row=1,column=1, rowspan=5,padx = 20)
         
-        def upper_rate_limit(self):
-            #Upper rate limit label
-            upper_rate = tk.Label(self,text = 'Upper Rate Limit', font = ('Montserrat',12),anchor = 'center')
-            upper_rate.grid(row = 2, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #Upper rate limit field input
-            upper_rate_read = ttk.Combobox(self, width = 10) 
-            upper_rate_read.grid(row = 2,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            upper_rate_read['values'] = (50,55,60,65,70,75,80,85,90,95,100,105,110,115,
-                                         120,125,130,135,140,145,150,155,160,165,170,175) 
-            upper_rate_read.current(0)
-            
-            return upper_rate_read 
+        read_connection = tk.Label(self,text ='Device Not Connected',font=('Montserrat',10),anchor = 'center',fg = '#ff4500')
+        read_connection.grid(row=5,column=3)
         
-        def atrial_amplitude(self):
-            #Atrial amplitude label
-            atrial_amp = tk.Label(self,text = 'Atrial Amplitude', font = ('Montserrat',12),anchor = 'center')
-            atrial_amp.grid(row = 3, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            atrial_amp_read = ttk.Combobox(self, width = 10) 
-            atrial_amp_read.grid(row = 3,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            atrial_amp_read['values'] = (0,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,
-                                         2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5) 
-            atrial_amp_read.current(0)
-            
-            return atrial_amp_read.get()
-        
-        def ventrical_amplitude(self):
-            #Atrial amplitude label
-            ventrical_amp = tk.Label(self,text = 'Ventrical Amplitude', font = ('Montserrat',12),anchor = 'center')
-            ventrical_amp.grid(row = 4, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            ventrical_amp_read = ttk.Combobox(self, width = 10) 
-            ventrical_amp_read.grid(row = 4,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            ventrical_amp_read['values'] = (0,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,
-                                         2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5) 
-            ventrical_amp_read.current(0)
-            
-            return ventrical_amp_read.get()
-        
-        
-        def atrial_pulse(self):
-            #Atrial pulse width label
-            atrial_pulse = tk.Label(self,text = 'Ventrical Pulse Width', font = ('Montserrat',12),anchor = 'center')
-            atrial_pulse.grid(row = 5, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            atrial_pulse_read = ttk.Combobox(self, width = 10) 
-            atrial_pulse_read.grid(row = 5,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            atrial_pulse_read['values'] = (0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9) 
-            atrial_pulse_read.current(0)
-            
-            return atrial_pulse_read.get()
-        
-        def ventrical_pulse(self):
-            #Atrial pulse width label
-            ventrical_pulse = tk.Label(self,text = 'Ventrical Pulse Width', font = ('Montserrat',12),anchor = 'center')
-            ventrical_pulse.grid(row = 6, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            ventrical_pulse_read = ttk.Combobox(self, width = 10) 
-            ventrical_pulse_read.grid(row = 6,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            ventrical_pulse_read['values'] = (0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9) 
-            ventrical_pulse_read.current(0)
-            
-            return ventrical_pulse_read.get()
-        
-        def atrial_sensitivity(self):
-            #Atrial pulse width label
-            atrial_sense = tk.Label(self,text = 'Atrial Sensitivity', font = ('Montserrat',12),anchor = 'center')
-            atrial_sense.grid(row = 7, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            atrial_sense_read = ttk.Combobox(self, width = 10) 
-            atrial_sense_read.grid(row = 7,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            atrial_sense_read['values'] = (0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0) 
-            atrial_sense_read.current(0)
-            
-            return atrial_sense_read.get()
-        
-        def ventrical_sensitivity(self):
-            #Atrial pulse width label
-            ventrical_sense = tk.Label(self,text = 'Ventrical Sensitivity', font = ('Montserrat',12),anchor = 'center')
-            ventrical_sense.grid(row = 8, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            ventrical_sense_read = ttk.Combobox(self, width = 10) 
-            ventrical_sense_read.grid(row = 8,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            ventrical_sense_read['values'] = (0.25,0.5,0.75,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0) 
-            ventrical_sense_read.current(0)
-            
-            return ventrical_sense_read.get()
-        
-        def vrp(self):
-            #Atrial pulse width label
-            ventrical_period = tk.Label(self,text = 'Ventrical Refractory Period', font = ('Montserrat',12),anchor = 'center')
-            ventrical_period.grid(row = 9, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            ventrical_period_read = ttk.Combobox(self, width = 10) 
-            ventrical_period_read.grid(row = 9,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            ventrical_period_read['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-            ventrical_period_read.current(0)
-            
-            return ventrical_period_read.get()
-        
-        def arp(self):
-            #Atrial pulse width label
-            atrial_period = tk.Label(self,text = 'Atrial Refractory Period', font = ('Montserrat',12),anchor = 'center')
-            atrial_period.grid(row = 10, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            atrial_period_read = ttk.Combobox(self, width = 10) 
-            atrial_period_read.grid(row = 10,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            atrial_period_read['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-            atrial_period_read.current(0)
-            
-            return atrial_period_read.get()
-        
-        def pvarp(self):
-            #Atrial pulse width label
-            pvar_period = tk.Label(self,text = 'PVARP', font = ('Montserrat',12),anchor = 'center')
-            pvar_period.grid(row = 11, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            pvar_period_read = ttk.Combobox(self, width = 10) 
-            pvar_period_read.grid(row = 11,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            pvar_period_read['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-            pvar_period_read.current(0)
-            
-            return pvar_period_read.get()
-        
-        def hysteresis(self):
-            #Atrial pulse width label
-            hys_limit = tk.Label(self,text = 'Hysteresis', font = ('Montserrat',12),anchor = 'center')
-            hys_limit.grid(row = 12, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            hys_limit_read = ttk.Combobox(self, width = 10) 
-            hys_limit_read.grid(row = 12,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            hys_limit_read['values'] =(0,30,35,40,45,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,
-                                         80,81,82,83,84,85,86,87,88,89,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175) 
-            hys_limit_read.current(0)
-            
-            return hys_limit_read.get()
-       
-        def rate_smoothing(self):
-            #Atrial pulse width label
-            rate_smoothing = tk.Label(self,text = 'Rate Smoothing (%)', font = ('Montserrat',12),anchor = 'center')
-            rate_smoothing.grid(row = 12, column = 1,sticky = 'we', pady = 20,padx =50 )
-            
-            #atrial_amp field input
-            rate_smoothing_read = ttk.Combobox(self, width = 10) 
-            rate_smoothing_read.grid(row = 12,column = 2,sticky ='W') 
-            # Adding combobox drop down list 
-            rate_smoothing_read['values'] =(0,3,6,9,12,15,18,21,25) 
-            rate_smoothing_read.current(0)
-            
-            return rate_smoothing_read.get()
-        
-        def parameter(e):
-            
-     
-            
-            
-            if dropdown.get() == 'AOO':    
-                
-                #1 shows label and entry box for lower rate limit
-                lower_rate_limit_val = lower_rate_limit(self)
-                #2 shows label and entry box for upper rate limit
-                upper_rate_limit_val = upper_rate_limit(self)
-                #3 shows label and entry box for atrial amplitude
-                atrial_amplitude_val = atrial_amplitude(self)
-                #4 shows label and entry box for Atrial pulse
-                atrial_pulse_val = atrial_pulse(self)
-            
-            elif dropdown.get() == 'AAI':
-                
-                #1 shows label and entry box for lower rate limit
-                lower_rate_limit_val = lower_rate_limit(self)
-                #2 shows label and entry box for upper rate limit
-                upper_rate_limit_val = upper_rate_limit(self)
-                #3 shows label and entry box for atrial amplitude
-                atrial_amplitude_val = atrial_amplitude(self)
-                #4 shows label and entry box for Atrial pulse
-                atrial_pulse_val = atrial_pulse(self)
-                #5 shows label and entry box for atrial sensitivity
-                atrial_sensitivity_val = atrial_sensitivity(self)
-                #6 shows label and entry box for ARP
-                arp_val = arp(self)
-                #7 shows label and entry box for PVARP
-                pvarp_val = pvarp(self)
-                #8 shows label and entry box for Hysteresis
-                hysteresis_val = hysteresis(self)
-                #9 shows label and entry box for Rate Smoothing
-                rate_smoothing_val = rate_smoothing(self)
-                
-                
-            elif dropdown.get() == 'VOO':
-                
-                #1 shows label and entry box for lower rate limit
-                lower_rate_limit_val = lower_rate_limit(self)
-                #2 shows label and entry box for upper rate limit
-                upper_rate_limit_val = upper_rate_limit(self)
-                #3 shows label and entry box for Ventrical amplitude
-                ventrical_amplitude_val = ventrical_amplitude(self)
-                #4 shows label and entry box for Ventrical pulse
-                ventrical_pulse_val = ventrical_pulse(self)
-                
-                
-                
-            elif dropdown.get() == 'VVI':
-                
-                #1 shows label and entry box for lower rate limit
-                lower_rate_limit_val = lower_rate_limit(self)
-                #2 shows label and entry box for upper rate limit
-                upper_rate_limit_val = upper_rate_limit(self)
-                #3 shows label and entry box for Ventrical amplitude
-                ventrical_amplitude_val = ventrical_amplitude(self)
-                #4 shows label and entry box for Ventrical pulse
-                ventrical_pulse_val = ventrical_pulse(self)
-                #5 shows label and entry box for atrial sensitivity
-                ventrical_sensitivity_val = ventrical_sensitivity(self)
-                #6 shows label and entry box for ARP
-                vrp_val = vrp(self)
-                #7 shows label and entry box for Hysteresis
-                hysteresis_val = hysteresis(self)
-                #8 shows label and entry box for Rate Smoothing
-                rate_smoothing_val = rate_smoothing(self)
-            
-            
-            
         # ComboBox menu for pace modes
         dropdown = ttk.Combobox(self, width = 10)
         # pace mode options
         dropdown['values'] = ('AOO','AAI','VOO','VVI') 
-        dropdown.grid(row = 1, column =0,padx =35)
+        dropdown.grid(row = 1, column =2,padx =50)
+        
+        
+        def parameter(e):
+            if dropdown.get() == 'AOO':    
+                
+                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AOO_page))
+                backButton.grid(row=1,column=3, pady = 20)
+                     
+            elif dropdown.get() == 'AAI':
+                
+                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(AAI_page))
+                backButton.grid(row=1,column=3, pady = 20)
+               
+            elif dropdown.get() == 'VOO':
+
+               backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VOO_page))
+               backButton.grid(row=1,column=3, pady = 20)
+                 
+            elif dropdown.get() == 'VVI':
+                
+                backButton = tk.Button(self,text = "Open", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(VVI_page))
+                backButton.grid(row=1,column=3, pady = 20)
+                
+            else:
+                pass
+            
         #bind the dropdown menu to parameter function
         dropdown.bind("<<ComboboxSelected>>",parameter)
+                
+
+class AOO_page(tk.Frame):
+    # parent is needed for all widgets that are not the root tkinter window
+    # controller allows for low coupling, frames can be accessed 
+    # with accessing controller instead of frame directly
+    def __init__(self, parent, controller):
+        
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        #1 shows label and entry box for lower rate limit
+        lower_rate_limit_val = lower_rate_limit(self)
+        #2 shows label and entry box for upper rate limit
+        upper_rate_limit_val = upper_rate_limit(self)
+        #3 shows label and entry box for atrial amplitude
+        atrial_amplitude_val = atrial_amplitude(self)
+        #4 shows label and entry box for Atrial pulse
+        atrial_pulse_val = atrial_pulse(self)
+        
+        #no functionality
+        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton.grid(row=1,column=0, pady = 10)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=2,column=0, pady = 10)
 
         
+class VOO_page(tk.Frame):
+    # parent is needed for all widgets that are not the root tkinter window
+    # controller allows for low coupling, frames can be accessed 
+    # with accessing controller instead of frame directly
+    def __init__(self, parent, controller):
+        
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        #1 shows label and entry box for lower rate limit
+        lower_rate_limit_val = lower_rate_limit(self)
+        #2 shows label and entry box for upper rate limit
+        upper_rate_limit_val = upper_rate_limit(self)
+        #3 shows label and entry box for Ventrical amplitude
+        ventrical_amplitude_val = ventrical_amplitude(self)
+        #4 shows label and entry box for Ventrical pulse
+        ventrical_pulse_val = ventrical_pulse(self)
+        
+        #no functionality
+        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton.grid(row=1,column=0, pady = 10)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=2,column=0, pady = 10)
+        
+class AAI_page(tk.Frame):
+    # parent is needed for all widgets that are not the root tkinter window
+    # controller allows for low coupling, frames can be accessed 
+    # with accessing controller instead of frame directly
+    def __init__(self, parent, controller):
+        
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        #1 shows label and entry box for lower rate limit
+        lower_rate_limit_val = lower_rate_limit(self)
+        #2 shows label and entry box for upper rate limit
+        upper_rate_limit_val = upper_rate_limit(self)
+        #3 shows label and entry box for atrial amplitude
+        atrial_amplitude_val = atrial_amplitude(self)
+        #4 shows label and entry box for Atrial pulse
+        atrial_pulse_val = atrial_pulse(self)
+        #5 shows label and entry box for atrial sensitivity
+        atrial_sensitivity_val = atrial_sensitivity(self)
+        #6 shows label and entry box for ARP
+        arp_val = arp(self)
+        #7 shows label and entry box for PVARP
+        pvarp_val = pvarp(self)
+        #8 shows label and entry box for Hysteresis
+        hysteresis_val = hysteresis(self)
+        #9 shows label and entry box for Rate Smoothing
+        rate_smoothing_val = rate_smoothing(self)
+        
+        #no functionality
+        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton.grid(row=1,column=0, pady = 10)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=2,column=0, pady = 10)
+
+class VVI_page(tk.Frame):
+    # parent is needed for all widgets that are not the root tkinter window
+    # controller allows for low coupling, frames can be accessed 
+    # with accessing controller instead of frame directly
+    def __init__(self, parent, controller):
+        
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        #1 shows label and entry box for lower rate limit
+        lower_rate_limit_val = lower_rate_limit(self)
+        #2 shows label and entry box for upper rate limit
+        upper_rate_limit_val = upper_rate_limit(self)
+        #3 shows label and entry box for Ventrical amplitude
+        ventrical_amplitude_val = ventrical_amplitude(self)
+        #4 shows label and entry box for Ventrical pulse
+        ventrical_pulse_val = ventrical_pulse(self)
+        #5 shows label and entry box for atrial sensitivity
+        ventrical_sensitivity_val = ventrical_sensitivity(self)
+        #6 shows label and entry box for ARP
+        vrp_val = vrp(self)
+        #7 shows label and entry box for Hysteresis
+        hysteresis_val = hysteresis(self)
+        #8 shows label and entry box for Rate Smoothing
+        rate_smoothing_val = rate_smoothing(self)
+        
+        #no functionality
+        saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton.grid(row=1,column=0, pady = 10)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=2,column=0, pady = 10)
+
+
 def main():
     patient.createPD()
     pacemakerApp = mainWindow()
