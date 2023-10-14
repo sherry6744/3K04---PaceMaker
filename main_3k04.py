@@ -257,7 +257,7 @@ class main_page(tk.Frame):
         border.grid(row=1,column=1, rowspan=5,padx = 20)
         
         read_connection = tk.Label(self,text ='Device Not Connected',font=('Montserrat',10),anchor = 'center',fg = '#ff4500')
-        read_connection.grid(row=5,column=3)
+        read_connection.grid(row=4,column=3)
         
         # ComboBox menu for pace modes
         dropdown = ttk.Combobox(self, width = 10)
