@@ -250,7 +250,7 @@ class main_page(tk.Frame):
         end_telementryButton = tk.Button(self,text = "End Telemetry", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Attention", message='Telementry session ended'))
         end_telementryButton .grid(row=3,column=0, pady = 20)
         
-        newpatientButton = tk.Button(self,text = "New Patient", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
+        newpatientButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
         newpatientButton .grid(row=4,column=0, pady = 20)
         
         border = tk.Label(self,text = "|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|", font=('Montserrat',12), anchor='center')
