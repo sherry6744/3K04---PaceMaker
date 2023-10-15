@@ -528,14 +528,24 @@ class parameters_page(tk.Frame):
         dropdown.bind("<<ComboboxSelected>>",parameter)
         
         def get_val():
-            if dropdown.get() =='AOO':
-               print({'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get()})             
+              if dropdown.get() =='AOO':
+                parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get()}
+                print(parameter)      
+                #patient.write_param(userLabel,parameter)
+                
             elif dropdown.get() =='AAI':
-               print({'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()})
+                parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
+                print(parameter)
+                
             elif dropdown.get() =='VOO':
-               print({'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get()})
+                parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get()}
+                print(parameter)
+            
             elif dropdown.get() =='VVI':   
-               print({'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()})
+                parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
+                print(parameter)
+            else:
+                messagebox.showinfo(title="Error", message="Choose a pacing mode on the top left corner")
 
     
         saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda :get_val())
