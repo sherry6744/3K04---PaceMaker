@@ -528,7 +528,7 @@ class parameters_page(tk.Frame):
         dropdown.bind("<<ComboboxSelected>>",parameter)
         
         def get_val():
-              if dropdown.get() =='AOO':
+            if dropdown.get() =='AOO':
                 parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get()}
                 print(parameter)      
                 #patient.write_param(userLabel,parameter)
