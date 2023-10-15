@@ -99,7 +99,7 @@ class welcome_page(tk.Frame):
         # Main frame | Contains Title, Login prompt, and User/Pass grid
         
         # Import Media
-        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\Mcmaster\Sem 5\3K04\3K04---PaceMaker\pacemaker.png") #Fix to make locally stored in same location as patient info
+        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
         #image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
         
         resize_img = image1.resize((100,100))
@@ -297,7 +297,7 @@ class parameters_page(tk.Frame):
         #1 shows label and entry box for lower rate limit
         #lower rate limit label
         lower_rate = tk.Label(self,text = 'Lower Rate Limit', font = ('Montserrat',10),anchor = 'center')
-        lower_rate.grid(row = 1, column = 0,sticky = 'w',pady =5,padx =50 )
+        lower_rate.grid(row = 1, column = 0,sticky = 'w',pady =5,padx =40 )
        
         #lower rate limit field input
         lower_rate_limit_val = ttk.Combobox(self, width = 5) 
@@ -309,7 +309,7 @@ class parameters_page(tk.Frame):
         #2 shows label and entry box for upper rate limit
         #Upper rate limit label
         upper_rate = tk.Label(self,text = 'Upper Rate Limit', font = ('Montserrat',10),anchor = 'center')
-        upper_rate.grid(row = 1, column = 2,sticky = 'w',pady =10,padx =50)
+        upper_rate.grid(row = 1, column = 2,sticky = 'w',pady =10,padx =40)
         
         #Upper rate limit field input
         upper_rate_limit_val = ttk.Combobox(self, width = 5) 
@@ -322,7 +322,7 @@ class parameters_page(tk.Frame):
         #3 shows label and entry box for Ventrical amplitude
         #ventrical_amp label
         ventrical_amp = tk.Label(self,text = 'Ventrical Amplitude', font = ('Montserrat',10),anchor = 'center')
-        ventrical_amp.grid(row = 2, column = 2,sticky = 'w',pady =10,padx =50)
+        ventrical_amp.grid(row = 2, column = 2,sticky = 'w',pady =10,padx =40)
         
         #ventrical_amp field input
         ventrical_amplitude_val = ttk.Combobox(self, width = 5) 
@@ -334,7 +334,7 @@ class parameters_page(tk.Frame):
         
         #4 shows label and entry box for Ventrical pulse
         ventrical_puls = tk.Label(self,text = 'Ventrical Pulse Width', font = ('Montserrat',10),anchor = 'center')
-        ventrical_puls.grid(row = 3, column = 2,sticky = 'w',pady =10,padx =50 )
+        ventrical_puls.grid(row = 3, column = 2,sticky = 'w',pady =10,padx =40 )
         
         #ventrical_pulse field input
         ventrical_pulse_val = ttk.Combobox(self, width = 5) 
@@ -345,7 +345,7 @@ class parameters_page(tk.Frame):
         
         #5 shows label and entry box for ventrical sensitivity
         ventrical_sense = tk.Label(self,text = 'Ventrical Sensitivity', font = ('Montserrat',10),anchor = 'center')
-        ventrical_sense.grid(row = 4, column = 2,sticky = 'w',pady =10,padx =50)
+        ventrical_sense.grid(row = 4, column = 2,sticky = 'w',pady =10,padx =40)
         
         #ventrical sensitivity field input
         ventrical_sensitivity_val  = ttk.Combobox(self, width = 5) 
@@ -357,7 +357,7 @@ class parameters_page(tk.Frame):
         #6 shows label and entry box for VRP
         #VRP width label
         ventrical_period = tk.Label(self,text = 'VRP', font = ('Montserrat',10),anchor = 'center')
-        ventrical_period.grid(row = 5, column = 2,sticky = 'w',pady =10 ,padx =50)
+        ventrical_period.grid(row = 5, column = 2,sticky = 'w',pady =10 ,padx =40)
         
         #VRP field input
         vrp_val  = ttk.Combobox(self, width = 5) 
@@ -368,7 +368,7 @@ class parameters_page(tk.Frame):
         
         #7 shows label and entry box for Hysteresis
         hys_limit = tk.Label(self,text = 'Hysteresis', font = ('Montserrat',10),anchor = 'center')
-        hys_limit.grid(row = 6, column = 2,sticky = 'w',pady =10 ,padx =50)
+        hys_limit.grid(row = 6, column = 2,sticky = 'w',pady =10 ,padx =40)
         
         #Hysteresis field input
         hysteresis_val  = ttk.Combobox(self, width = 5) 
@@ -381,7 +381,7 @@ class parameters_page(tk.Frame):
         #8 shows label and entry box for Rate Smoothing
         #Rate Smoothing width label
         rate_smoothing = tk.Label(self,text = 'Rate Smoothing', font = ('Montserrat',10),anchor = 'center')
-        rate_smoothing.grid(row = 7, column = 0,sticky = 'w', pady =10,padx =50)
+        rate_smoothing.grid(row = 7, column = 0,sticky = 'w', pady =10,padx =40)
         
         #Rate Smoothing field input
         rate_smoothing_val  = ttk.Combobox(self, width = 5) 
@@ -393,7 +393,7 @@ class parameters_page(tk.Frame):
         #3 shows label and entry box for atrial amplitude
         #Atrial amplitude label
         atrial_amp = tk.Label(self,text = 'Atrial Amplitude', font = ('Montserrat',10),anchor = 'center')
-        atrial_amp.grid(row = 2, column = 0,sticky = 'w',pady =10,padx =50 )
+        atrial_amp.grid(row = 2, column = 0,sticky = 'w',pady =10,padx =40 )
         
         #atrial_amp field input
         atrial_amplitude_val = ttk.Combobox(self, width = 5) 
@@ -406,7 +406,7 @@ class parameters_page(tk.Frame):
         #4 shows label and entry box for Atrial pulse
         #Atrial pulse width label
         atrial_puls = tk.Label(self,text = 'Atrial Pulse Width', font = ('Montserrat',10),anchor = 'center')
-        atrial_puls.grid(row = 3, column = 0,sticky = 'w',pady =10,padx =50)
+        atrial_puls.grid(row = 3, column = 0,sticky = 'w',pady =10,padx =40)
         
         #atrial pulse field input
         atrial_pulse_val = ttk.Combobox(self, width = 5) 
@@ -417,7 +417,7 @@ class parameters_page(tk.Frame):
         
         #5 shows label and entry box for atrial sensitivity
         atrial_sense = tk.Label(self,text = 'Atrial Sensitivity', font = ('Montserrat',10),anchor = 'center')
-        atrial_sense.grid(row = 4, column = 0,sticky = 'w',pady =10,padx =50 )
+        atrial_sense.grid(row = 4, column = 0,sticky = 'w',pady =10,padx =40 )
         
         #atrial sensitivity field input
         atrial_sensitivity_val = ttk.Combobox(self, width = 5) 
@@ -428,7 +428,7 @@ class parameters_page(tk.Frame):
         
         #6 shows label and entry box for ARP
         atrial_period = tk.Label(self,text = 'ARP', font = ('Montserrat',10),anchor = 'center')
-        atrial_period.grid(row = 5, column = 0,sticky = 'w',pady =10 ,padx =50)
+        atrial_period.grid(row = 5, column = 0,sticky = 'w',pady =10 ,padx =40)
         
         #arp field input
         arp_val = ttk.Combobox(self, width = 5) 
@@ -440,7 +440,7 @@ class parameters_page(tk.Frame):
         #7 shows label and entry box for PVARP
         #PVARP width label
         pvar_period = tk.Label(self,text = 'PVARP', font = ('Montserrat',10),anchor = 'center')
-        pvar_period.grid(row = 6, column = 0,sticky = 'w',pady =10,padx =50)
+        pvar_period.grid(row = 6, column = 0,sticky = 'w',pady =10,padx =40)
         
         #PVARP field input
         pvarp_val  = ttk.Combobox(self, width = 5) 
@@ -453,7 +453,7 @@ class parameters_page(tk.Frame):
         dropdown = ttk.Combobox(self, width = 5)
         # pace mode options
         dropdown['values'] = ('AOO','AAI','VOO','VVI') 
-        dropdown.grid(row = 0, column =0,sticky ='w',padx =50,pady =10)
+        dropdown.grid(row = 0, column =0,sticky ='w',padx =40,pady =10)
         
         
         def parameter(e):
