@@ -15,6 +15,12 @@ from PIL import ImageTk, Image
 from patient import Patient
 import patient
 import csv
+import global_vars
+
+global_vars.init()
+
+## GLOBAL VARIABLES
+#global curr_user
 
 ### MAIN WINDOW CLASS ###
 class mainWindow(tk.Tk):
@@ -99,8 +105,8 @@ class welcome_page(tk.Frame):
         # Main frame | Contains Title, Login prompt, and User/Pass grid
         
         # Import Media
-        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
-        #image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
+        #image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
+        image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\group24\DCM_group24\pacemaker.png") #Fix to make locally stored in same location as patient info
         
         resize_img = image1.resize((100,100))
         self.photo = ImageTk.PhotoImage(resize_img)
@@ -133,6 +139,7 @@ class welcome_page(tk.Frame):
         inputPass = tk.Entry(self, width = 20, show='*') 
         inputPass.grid(row=4,column=1, sticky= tk.W)
         #print(inputPass.get())
+        
 
         # Login Button --> Add Functionality
         #loginButton = tk.Button(self,text = "Login", font=('Montserrat',12), anchor='center',command=lambda : self.loginState(patient.loginUser(inputUser.get("1.0","end-1c"),inputPass.get())))
@@ -268,7 +275,7 @@ class main_page(tk.Frame):
         parameterButton .grid(row=1,column=2, pady = 20,padx = 50)
         
     
-        
+#### CALENDAR PAGE ####  
 class set_date_time(tk.Frame):
     
     def __init__(self, parent, controller):
@@ -288,7 +295,7 @@ class set_date_time(tk.Frame):
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=3,column=1, pady = 10, padx = 10)
 
-
+#### PARAMS PAGE ####
 class parameters_page(tk.Frame):
     # parent is needed for all widgets that are not the root tkinter window
     # controller allows for low coupling, frames can be accessed 
@@ -698,38 +705,48 @@ class parameters_page(tk.Frame):
         
         def get_val():
             
+            
             # the value stored in the dropdowns is taken and displayed on the python console 
             if dropdown.get() =='AOO':
                 parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get()}
-                print(parameter)      
+                print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
+                   
                 
             elif dropdown.get() =='AAI':
                 parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOO':
                 parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVI':   
                 parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='AOOR':
                 parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
-                print(parameter)      
+                print(parameter)  
+                patient.saveParams(parameter, global_vars.curr_user)    
                 
             elif dropdown.get() =='AAIR':
                 parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOOR':
                 parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVIR':   
                 parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
+                patient.saveParams(parameter, global_vars.curr_user)
                 
             else:
                 messagebox.showinfo(title="Error", message="Choose a pacing mode on the top left corner")
