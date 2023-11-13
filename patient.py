@@ -2,6 +2,8 @@
 import os.path
 import csv
 import pandas as pd
+import global_vars
+
 
 ## PATIENT OBJECT
 class Patient:
@@ -51,9 +53,10 @@ def loginUser(userInput,passInput):
              continue
          if(userInput == str(col_1.values[patients])):
              if(passInput == str(col_2.values[patients])):
-                 return(2)
+                global_vars.curr_user = userInput
+                return(2)
              else:
-                 return(1)
+                return(1)
     return(0)
 
 ## DETERMINE IF MAX USER NUMBER REACHED
@@ -63,6 +66,13 @@ def availUsers():
         col = userName['Username']
     return int(10-col.size)
     
-    
-            
-        
+def saveParams(param_vals, user):
+    with open('patientData.csv', 'r') as csvfile:
+        userName = pd.read_csv(csvfile, delimiter=' ')
+        col_1 = userName['Username']
+        for patients in range(col_1.size):
+            if(user != str(col_1.values[patients])):
+                continue
+            if(user == str(col_1.values[patients])):
+                print("Patient " + str(user) + " found on line " + str(patients+2) + " in database. This is user number " + str(patients+1))
+                print("Note that Username and Password are on the 1st row of the database. First user begins on 2nd line.")
