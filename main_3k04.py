@@ -223,7 +223,7 @@ class user_page(tk.Frame):
         validPass = passInput
         checkPass = passCheck
         uCheck = True
-        newPatient = Patient(validUser,validPass,{})
+        newPatient = Patient(validUser,validPass)
         
         if (validPass != checkPass):
             messagebox.showinfo(title="Invalid Password", message="Invalid password, please verify password entries are identical.")
