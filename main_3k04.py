@@ -305,6 +305,7 @@ class parameters_page(tk.Frame):
         
         tk.Frame.__init__(self,parent, height=500,width=600)
         
+        
        #below the parameters used in the various modes have been defined with their respective values 
         
     #1 Lower Rate Limit
@@ -319,6 +320,7 @@ class parameters_page(tk.Frame):
         lower_rate_limit_val['values'] = (30,35,40,45,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,
                                     80,81,82,83,84,85,86,87,88,89,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175) 
         lower_rate_limit_val.current(0)
+        
        
     #2 Upper Rate Limit
         
@@ -408,7 +410,7 @@ class parameters_page(tk.Frame):
         # values
         ventrical_sensitivity_val ['values'] = (0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,
                                      2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.3,3.4,3.5,3.6,3.7,3.8,3.9,4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,5.0)
-        ventrical_sensitivity_val .current(0)
+        ventrical_sensitivity_val.current(0)
         
     #9 ARP
         
@@ -420,7 +422,7 @@ class parameters_page(tk.Frame):
         arp_val .grid(row = 5,column =1,sticky ='W') 
         # values
         arp_val ['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-        arp_val .current(0)    
+        arp_val.current(0)    
        
     #10 VRP
 
@@ -432,7 +434,7 @@ class parameters_page(tk.Frame):
         vrp_val .grid(row = 5,column = 3,sticky ='W') 
         # values
         vrp_val ['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-        vrp_val .current(0)
+        vrp_val.current(0)
         
     #11 PVARP
     
@@ -444,7 +446,7 @@ class parameters_page(tk.Frame):
         pvarp_val .grid(row = 6,column = 1,sticky ='W') 
         # values
         pvarp_val ['values'] = (150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500) 
-        pvarp_val .current(0)
+        pvarp_val.current(0)
         
     #12 Maximum Sensor Rate 
         
@@ -729,34 +731,45 @@ class parameters_page(tk.Frame):
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='AOOR':
-                parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'AOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)  
                 patient.saveParams(parameter, global_vars.curr_user)    
                 
             elif dropdown.get() =='AAIR':
-                parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'AAIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOOR':
-                parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'VOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVIR':   
-                parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'VVIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             else:
                 messagebox.showinfo(title="Error", message="Choose a pacing mode on the top left corner")
-
+            
+        #def set_val():
+        #    print("test")
+            # Check column of current patient --> done
+            # if column value is equal to null, do nothing --> done
+            # else set current value in page to values in csv
+            # Need to convert csv string dictionary data to dictionary data again then 
+            # use those values as parameters, need those as singular values
+            
       
         saveButton = tk.Button(self,text = "Save", font=('Montserrat',10), anchor='center',command=lambda :get_val())
-        saveButton.grid(row=0,column=2, pady = 10)
+        saveButton.grid(row=0,column=1, pady = 10)
         
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=0,column=3, pady = 10)
+        
+        backButton = tk.Button(self,text = "Load Values", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Current Patient Parameters", message= "Current Patient Parameters for " + str(global_vars.curr_user) + ": " + patient.set_val(global_vars.curr_user)))
+        backButton.grid(row=0,column=2, pady = 10)
 
 
 
