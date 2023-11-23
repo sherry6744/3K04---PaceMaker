@@ -16,6 +16,10 @@ from patient import Patient
 import patient
 import csv
 import global_vars
+import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
 
 global_vars.init()
 
@@ -58,7 +62,7 @@ class mainWindow(tk.Tk):
         # Must initialize all the pages first
         #for pageNum in (welcome_page,user_page,main_page):
         
-        for pageNum in (welcome_page,user_page,main_page,parameters_page,set_date_time):
+        for pageNum in (welcome_page,user_page,main_page,parameters_page,set_date_time,egram):
             page = pageNum(base,self)
             self.pages[pageNum] = page
             page.grid(row = 0, column = 0, sticky="nsew")
@@ -105,8 +109,8 @@ class welcome_page(tk.Frame):
         # Main frame | Contains Title, Login prompt, and User/Pass grid
         
         # Import Media
-        #image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
-        image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\group24\DCM_group24\pacemaker.png") #Fix to make locally stored in same location as patient info
+        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
+        #image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\group24\DCM_group24\pacemaker.png") #Fix to make locally stored in same location as patient info
         
         resize_img = image1.resize((100,100))
         self.photo = ImageTk.PhotoImage(resize_img)
@@ -252,8 +256,8 @@ class main_page(tk.Frame):
         aboutButton = tk.Button(self,text = "About", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="About", message="Model Number : 22 \nSoftware Revision Number : 1\nDCM Serial Number : 21\nMcMaster University"))
         aboutButton.grid(row=1,column=0, pady = 20)
         
-        aboutButton = tk.Button(self,text = "Egram Data", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Egram", message="Egram data will show once button is pressed"))
-        aboutButton.grid(row=2,column=2, pady = 20)
+        EgramButton = tk.Button(self,text = "Egram Data", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(egram))
+        EgramButton.grid(row=2,column=2, pady = 20)
         
         
         set_timeButton = tk.Button(self,text = "Set Date and Time", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(set_date_time))
@@ -768,8 +772,44 @@ class parameters_page(tk.Frame):
         backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         backButton.grid(row=0,column=3, pady = 10)
         
-        backButton = tk.Button(self,text = "Load Values", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Current Patient Parameters", message= "Current Patient Parameters for " + str(global_vars.curr_user) + ": " + patient.set_val(global_vars.curr_user)))
-        backButton.grid(row=0,column=2, pady = 10)
+        LoadButton = tk.Button(self,text = "Load Values", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Current Patient Parameters", message= "Current Patient Parameters for " + str(global_vars.curr_user) + ": " + patient.set_val(global_vars.curr_user)))
+        LoadButton.grid(row=0,column=2, pady = 10)
+        
+class egram(tk.Frame):
+    
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent, height=500,width=600)
+        
+        fig = Figure(figsize=(7, 5))
+        time = np.arange(0, 5, .01)
+        
+        a1 =  2 * np.sin(2 * np.pi * time)
+        a2 = 2 * np.sin(2 * np.pi * time)
+        
+        atrial = fig.add_subplot(211)
+        atrial_line, = atrial.plot(time, a1)
+        ventricular = fig.add_subplot(212)
+        ventricular_line, = ventricular.plot(time,a2)
+        
+        atrial.set(xlim=[0, 3], ylim=[-4, 10], ylabel='f(t)')        
+        ventricular.set(xlim=[0, 3], ylim=[-4, 10], xlabel='Time [s]', ylabel='f(t)')
+        
+              
+        canvas = FigureCanvasTkAgg(fig, master=self)  # A tk.DrawingArea.
+        canvas.get_tk_widget().grid(row=1,column=0,columnspan=3,rowspan= 4)
+        canvas.draw()
+        
+        detailLabel = tk.Label(self, text = "Egram Data", font=('Montserrat',18), anchor='center',)
+        detailLabel.grid(row=0,column=0,columnspan=3)
+        
+        backButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        backButton.grid(row=5,column=0, pady = 10, padx = 10,sticky='w')
+        
+        LoadButton = tk.Button(self,text = "Show Parameters", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Current Patient Parameters", message= "Current Patient Parameters for " + str(global_vars.curr_user) + ": " + patient.set_val(global_vars.curr_user)))
+        LoadButton.grid(row=5,column=1, pady = 10, padx = 10,sticky='w')
+        
+        saveButton = tk.Button(self,text = "save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
+        saveButton.grid(row=5,column=2, pady = 10, padx = 10,sticky='w')
 
 
 
