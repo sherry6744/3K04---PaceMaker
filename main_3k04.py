@@ -109,8 +109,8 @@ class welcome_page(tk.Frame):
         # Main frame | Contains Title, Login prompt, and User/Pass grid
         
         # Import Media
-        image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
-        #image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\group24\DCM_group24\pacemaker.png") #Fix to make locally stored in same location as patient info
+        #image1 = Image.open(r"C:\Users\aggar\OneDrive\Desktop\pacemaker.png") #Fix to make locally stored in same location as patient info
+        image1 = Image.open(r"C:\Users\joell\OneDrive\Desktop\group24\DCM_group24\pacemaker.png") #Fix to make locally stored in same location as patient info
         
         resize_img = image1.resize((100,100))
         self.photo = ImageTk.PhotoImage(resize_img)
@@ -514,17 +514,17 @@ class parameters_page(tk.Frame):
         react_time_val['values'] = (10,20,30,40,50) 
         react_time_val.current(0)
         
-    #17 Response Fcator
+    #17 Response Factor
         
         # Label
-        response_time = tk.Label(self,text = 'Response Fcator', font = ('Montserrat',10),anchor = 'center')
-        response_time.grid(row = 9, column = 0,sticky = 'w',pady =10 ,padx =40)
+        response_factor = tk.Label(self,text = 'Response Factor', font = ('Montserrat',10),anchor = 'center')
+        response_factor.grid(row = 9, column = 0,sticky = 'w',pady =10 ,padx =40)
         # input
-        response_time_val = ttk.Combobox(self, width = 5) 
-        response_time_val.grid(row = 9,column = 1,sticky ='W') 
+        response_factor_val = ttk.Combobox(self, width = 5) 
+        response_factor_val.grid(row = 9,column = 1,sticky ='W') 
         # values
-        response_time_val['values'] =(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16) 
-        response_time_val.current(0)
+        response_factor_val['values'] =(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16) 
+        response_factor_val.current(0)
         
     #18 Recovery Time
         
@@ -566,7 +566,7 @@ class parameters_page(tk.Frame):
                 rate_smoothing_val.config(state = 'disabled')
                 activity_thresh_val.config(state = 'disabled')
                 react_time_val.config(state = 'disabled')
-                response_time_val.config(state = 'disabled')
+                response_factor_val.config(state = 'disabled')
                 recovery_time_val.config(state = 'disabled')
                      
             elif dropdown.get() == 'AAI':
@@ -585,7 +585,7 @@ class parameters_page(tk.Frame):
                 rate_smoothing_val.config(state = 'normal')
                 activity_thresh_val.config(state = 'disabled')
                 react_time_val.config(state = 'disabled')
-                response_time_val.config(state = 'disabled')
+                response_factor_val.config(state = 'disabled')
                 recovery_time_val.config(state = 'disabled')
                
             elif dropdown.get() == 'VOO':
@@ -604,7 +604,7 @@ class parameters_page(tk.Frame):
                rate_smoothing_val.config(state = 'disabled')
                activity_thresh_val.config(state = 'disabled')
                react_time_val.config(state = 'disabled')
-               response_time_val.config(state = 'disabled')
+               response_factor_val.config(state = 'disabled')
                recovery_time_val.config(state = 'disabled')
                
                  
@@ -624,7 +624,7 @@ class parameters_page(tk.Frame):
                 rate_smoothing_val.config(state = 'normal')
                 activity_thresh_val.config(state = 'disabled')
                 react_time_val.config(state = 'disabled')
-                response_time_val.config(state = 'disabled')
+                response_factor_val.config(state = 'disabled')
                 recovery_time_val.config(state = 'disabled')
                 
             elif dropdown.get() == 'AOOR':
@@ -643,7 +643,7 @@ class parameters_page(tk.Frame):
                  rate_smoothing_val.config(state = 'disabled')
                  activity_thresh_val.config(state = 'normal')
                  react_time_val.config(state = 'normal')
-                 response_time_val.config(state = 'normal')
+                 response_factor_val.config(state = 'normal')
                  recovery_time_val.config(state = 'normal')
                  
             elif dropdown.get() == 'AAIR':
@@ -662,7 +662,7 @@ class parameters_page(tk.Frame):
                 rate_smoothing_val.config(state = 'normal')
                 activity_thresh_val.config(state = 'normal')
                 react_time_val.config(state = 'normal')
-                response_time_val.config(state = 'normal')
+                response_factor_val.config(state = 'normal')
                 recovery_time_val.config(state = 'normal')
                  
             elif dropdown.get() == 'VOOR':
@@ -681,7 +681,7 @@ class parameters_page(tk.Frame):
                  rate_smoothing_val.config(state = 'disabled')
                  activity_thresh_val.config(state = 'normal')
                  react_time_val.config(state = 'normal')
-                 response_time_val.config(state = 'normal')
+                 response_factor_val.config(state = 'normal')
                  recovery_time_val.config(state = 'normal')
                  
             elif dropdown.get() == 'VVIR':
@@ -700,7 +700,7 @@ class parameters_page(tk.Frame):
                  rate_smoothing_val.config(state = 'normal')
                  activity_thresh_val.config(state = 'normal')
                  react_time_val.config(state = 'normal')
-                 response_time_val.config(state = 'normal')
+                 response_factor_val.config(state = 'normal')
                  recovery_time_val.config(state = 'normal')
                  
             else:
@@ -711,46 +711,45 @@ class parameters_page(tk.Frame):
         
         def get_val():
             
-            
             # the value stored in the dropdowns is taken and displayed on the python console 
             if dropdown.get() =='AOO':
-                parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get()}
+                parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                    
                 
             elif dropdown.get() =='AAI':
-                parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
+                parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
-            elif dropdown.get() =='VOO':
-                parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get()}
+            elif dropdown.get() =='VOO': 
+                parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVI':   
-                parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get()}
+                parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='AOOR':
-                parameter = {'Mode' : 'AOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'AOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)  
                 patient.saveParams(parameter, global_vars.curr_user)    
                 
             elif dropdown.get() =='AAIR':
-                parameter = {'Mode' : 'AAIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'AAIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOOR':
-                parameter = {'Mode' : 'VOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'VOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVIR':   
-                parameter = {'Mode' : 'VVIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_time_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 'VVIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
