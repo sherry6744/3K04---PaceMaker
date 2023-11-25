@@ -19,6 +19,7 @@ import global_vars
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+import serial_comm 
 
 
 global_vars.init()
@@ -91,6 +92,12 @@ class mainWindow(tk.Tk):
             messagebox.showinfo(title="Error", message="Max patients reached. Limit of 10 patients.")
         else:
             self.display_page(user_page)
+            
+    def on_send_tele(self,user_params):
+        if (len(user_params) == 0):
+            messagebox.showinfo(title="Error", message="No parameter data available. Please user data in 'Change Parameters' Page.")
+        else:
+            serial_comm.write_param(global_vars.curr_user)
         
     def logTime(self):
         timeSave = datetime.now()
@@ -266,6 +273,14 @@ class main_page(tk.Frame):
         end_telementryButton = tk.Button(self,text = "End Telemetry", font=('Montserrat',10), anchor='center',command=lambda : messagebox.showinfo(title="Attention", message='Telementry session ended'))
         end_telementryButton .grid(row=3,column=0, pady = 20)
         
+        # Writes to Pacemaker
+        start_telementryButton = tk.Button(self,text = "Start Telemetry", font=('Montserrat',10), anchor='center',command=lambda : controller.on_send_tele(eval(patient.set_val(global_vars.curr_user))))
+        start_telementryButton .grid(row=3,column=2, pady = 20)
+        
+        # Writes to Pacemaker
+        start_telementryButton = tk.Button(self,text = "Telemetry Status Check", font=('Montserrat',10), anchor='center',command=lambda : serial_comm.read_param(global_vars.curr_user))
+        start_telementryButton .grid(row=4,column=2, pady = 20)
+        
         newpatientButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
         newpatientButton .grid(row=4,column=0, pady = 20)
         
@@ -273,7 +288,7 @@ class main_page(tk.Frame):
         border.grid(row=1,column=1, rowspan=5,padx = 20)
         
         read_connection = tk.Label(self,text ='Device Not Connected',font=('Montserrat',10),anchor = 'center',fg = '#ff4500')
-        read_connection.grid(row=4,column=2)
+        read_connection.grid(row=5,column=2)
         
         parameterButton = tk.Button(self,text = "Change Parameters", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(parameters_page))
         parameterButton .grid(row=1,column=2, pady = 20,padx = 50)
@@ -499,7 +514,7 @@ class parameters_page(tk.Frame):
         activity_thresh_val = ttk.Combobox(self, width = 5) 
         activity_thresh_val.grid(row = 8,column = 1,sticky ='W') 
         # values
-        activity_thresh_val['values'] = ('V-Low','Low','Med-Low','Med','Med-High','High','V-High') 
+        activity_thresh_val['values'] = (1,2,3,4,5,6,7) 
         activity_thresh_val.current(0)
         
     #16 Reaction Time 
@@ -713,43 +728,43 @@ class parameters_page(tk.Frame):
             
             # the value stored in the dropdowns is taken and displayed on the python console 
             if dropdown.get() =='AOO':
-                parameter = {'Mode' : 'AOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
+                parameter = {'Mode' : 1,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                    
                 
             elif dropdown.get() =='AAI':
-                parameter = {'Mode' : 'AAI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
+                parameter = {'Mode' : 2,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOO': 
-                parameter = {'Mode' : 'VOO','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
+                parameter = {'Mode' : 3,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVI':   
-                parameter = {'Mode' : 'VVI','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
+                parameter = {'Mode' : 4,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':0,'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': 0,'RT':0,'RspT':0,'RecT':0}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='AOOR':
-                parameter = {'Mode' : 'AOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 5,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':0,'ARP':0,'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)  
                 patient.saveParams(parameter, global_vars.curr_user)    
                 
             elif dropdown.get() =='AAIR':
-                parameter = {'Mode' : 'AAIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 6,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':atrial_amplitude_val.get(),'AP':atrial_pulse_val.get(),'AS':atrial_sensitivity_val.get(),'ARP':arp_val.get(),'VA':0,'VP':0,'VS':0,'VRP':0,'PVARP':pvarp_val.get(),'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
             elif dropdown.get() =='VOOR':
-                parameter = {'Mode' : 'VOOR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 7,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':0,'VRP':0,'PVARP':0,'H':0,'RS':0,'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
             
             elif dropdown.get() =='VVIR':   
-                parameter = {'Mode' : 'VVIR','LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
+                parameter = {'Mode' : 8,'LRL':lower_rate_limit_val.get(),'URL':upper_rate_limit_val.get(),'MSR':max_sens_val.get(),'AA':0,'AP':0,'AS':0,'ARP':0,'VA':ventrical_amplitude_val.get(),'VP':ventrical_pulse_val.get(),'VS':ventrical_sensitivity_val.get(),'VRP':vrp_val.get(),'PVARP':0,'H':hysteresis_val.get(),'RS':rate_smoothing_val.get(),'AT': activity_thresh_val.get(),'RT':react_time_val.get(),'RspT':response_factor_val.get(),'RecT':recovery_time_val.get()}
                 print(parameter)
                 patient.saveParams(parameter, global_vars.curr_user)
                 
