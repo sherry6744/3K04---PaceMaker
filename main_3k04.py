@@ -97,6 +97,7 @@ class mainWindow(tk.Tk):
         if (len(user_params) == 0):
             messagebox.showinfo(title="Error", message="No parameter data available. Please user data in 'Change Parameters' Page.")
         else:
+            print(global_vars.curr_user)
             serial_comm.write_param(global_vars.curr_user)
         
     def logTime(self):
