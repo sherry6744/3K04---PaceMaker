@@ -265,7 +265,7 @@ class main_page(tk.Frame):
         aboutButton.grid(row=1,column=0, pady = 20)
         
         EgramButton = tk.Button(self,text = "Egram Data", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(egram))
-        EgramButton.grid(row=2,column=2, pady = 20)
+        EgramButton.grid(row=4,column=2, pady = 20)
         
         
         set_timeButton = tk.Button(self,text = "Set Date and Time", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(set_date_time))
@@ -279,8 +279,8 @@ class main_page(tk.Frame):
         start_telementryButton .grid(row=3,column=2, pady = 20)
         
         # Writes to Pacemaker
-        start_telementryButton = tk.Button(self,text = "Telemetry Status Check", font=('Montserrat',10), anchor='center',command=lambda : serial_comm.read_param(global_vars.curr_user))
-        start_telementryButton .grid(row=4,column=2, pady = 20)
+        start_telementryButton = tk.Button(self,text = "Telemetry Status Check", font=('Montserrat',10), anchor='center',command=lambda : serial_comm.read_param())
+        start_telementryButton .grid(row=0,column=2)
         
         newpatientButton = tk.Button(self,text = "Back", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(welcome_page))
         newpatientButton .grid(row=4,column=0, pady = 20)
@@ -288,8 +288,8 @@ class main_page(tk.Frame):
         border = tk.Label(self,text = "|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|", font=('Montserrat',12), anchor='center')
         border.grid(row=1,column=1, rowspan=5,padx = 20)
         
-        read_connection = tk.Label(self,text ='Device Not Connected',font=('Montserrat',10),anchor = 'center',fg = '#ff4500')
-        read_connection.grid(row=5,column=2)
+        read_connection = tk.Button(self,text ='Connection Status',font=('Montserrat',10),anchor = 'center',command=lambda : serial_comm.status())
+        read_connection.grid(row=2,column=2)
         
         parameterButton = tk.Button(self,text = "Change Parameters", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(parameters_page))
         parameterButton .grid(row=1,column=2, pady = 20,padx = 50)
@@ -795,32 +795,22 @@ class egram(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent, height=500,width=600)
         
-		plt.rcParams["figure.figsize"] = [5.00, 3.50]
-		plt.rcParams["figure.autolayout"] = True
-
-		plt.axes(xlim=(0, 2), ylim=(-2, 2))
-		figure = plt.Figure(dpi=100)
-		egram_axis = fig.add_subplot(xlim=(0, 2), ylim=(-1, 1))	
-		egram_line, = egram_axis.plot([], [], lw=2)
-    
-		def animate(i):
-   			x = np.linspace(0, 2, 1000)
-    		y = np.sin(2 * np.pi * (x - 0.01 * i))
-    		egram_line.set_data(x, y)
-    		return egram_line,
-    
-		def init():
-    		egram_line.set_data([], [])
-    		return egram_line,
-
-
-		toolbar = NavigationToolbar2Tk(canvas, self, pack_toolbar=False)
-		toolbar.update()
-
-		toolbar.grid(row = 6,column = 0,columnspan = 3)
-
-		anim = animation.FuncAnimation(fig, animate, init_func=init,frames=200, interval=20, blit=True)     
-                      
+        
+        fig = Figure(figsize=(5, 3.5))
+        time = np.arange(0, 5, .01)
+        
+        a1 =  2 * np.sin(2 * np.pi * time)
+        a2 = 2 * np.sin(2 * np.pi * time)
+        
+        atrial = fig.add_subplot(211)
+        atrial_line, = atrial.plot(time, a1)
+        ventricular = fig.add_subplot(212)
+        ventricular_line, = ventricular.plot(time,a2)
+        
+        atrial.set(xlim=[0, 3], ylim=[-4, 10], ylabel='f(t)')        
+        ventricular.set(xlim=[0, 3], ylim=[-4, 10], xlabel='Time [s]', ylabel='f(t)')
+        
+              
         canvas = FigureCanvasTkAgg(fig, master=self)  # A tk.DrawingArea.
         canvas.get_tk_widget().grid(row=1,column=0,columnspan=3,rowspan= 4)
         canvas.draw()
@@ -837,8 +827,9 @@ class egram(tk.Frame):
         saveButton = tk.Button(self,text = "save", font=('Montserrat',10), anchor='center',command=lambda : controller.display_page(main_page))
         saveButton.grid(row=5,column=2, pady = 10, padx = 10,sticky='w')
 
-
-
+        
+        
+        
 def main():
     patient.createPD()
     pacemakerApp = mainWindow()
