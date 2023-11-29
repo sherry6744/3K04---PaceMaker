@@ -106,5 +106,18 @@ def read_param():
             #bytesToRead = ser.inWaiting()
             ser.close()
             
+def status():
+    try:
+        for i in serial.tools.liist_ports.comports():
+            if(i.device =="COM5"):
+                port_val = i.device
+                print("Device Connected")
+                messagebox.showinfo(title="Connection Status", message='Device Connected')
+        
+    except:
+        print("Device Not Connected")
+        messagebox.showinfo(title="Connection Status", message='Device Not Connected')
+
+            
         
         
