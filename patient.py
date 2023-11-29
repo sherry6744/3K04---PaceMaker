@@ -67,6 +67,8 @@ def availUsers():
         col = userName['Username']
     return int(10-col.size)
 
+
+
 ## SAVE DATA TO CSV
 def saveParams(param_vals, user):
     with open('patientData.csv', 'r') as csvfile:
@@ -95,7 +97,7 @@ def set_val(user):
         col_1 = userName['Username']
         col_2 = userName['Password']
         col_3 = userName['Parameters']
-        user_params = "None"
+        user_params = ""
         print(global_vars.curr_user)
         print("test"+ col_3.values[0])
         parseRow = 0
