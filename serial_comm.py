@@ -1,6 +1,6 @@
-#SERIAL COMMUNICATION 
-#ASSIGNMENT 2
+#SERIAL COMMUNICATION TEST
 import serial
+import serial.tools.list_ports
 import struct
 from time import sleep
 import os.path
@@ -8,6 +8,8 @@ import csv
 import pandas as pd
 import global_vars
 pd.options.mode.chained_assignment = None  # default='warn'
+from tkinter import messagebox
+from serial.tools import list_ports
 
 # Use the following command to check your computer ports
 # python -m serial.tools.list_ports
@@ -66,6 +68,10 @@ def write_param(user):
             
     with serial.Serial(port_val,baudrate=115200,timeout=1) as ser:
         if(params_dict != {}):
+            print("Entry Data: ", sync + set_param)
+            print("Type for sync: ", type(sync))
+            print("Type for set_param: ", type(set_param))
+            print("Type for sync+set_param: ", type(sync+set_param))
             print("Mode: ", MODE)
             print("LOWER_RATE_LIMIT: " , LOWER_RATE_LIMIT)
             print("MAX_SENS_RATE: " , MAX_SENS_RATE)
@@ -85,13 +91,16 @@ def write_param(user):
             param_send = sync + set_param + MODE + LOWER_RATE_LIMIT +  MAX_SENS_RATE + ATR_AMP + ATR_PW + ATR_SENS + ARP + VENT_AMP + VENT_PW + VENT_SENS + VRP + PVARP + ACTIVITY_THRES + RECOV_TIME + RESPOND_FACTOR + REACTION_TIME
             #ser.write(param_send) 
             
-            print(param_send)
-            ser.write(param_send)
-            #print(param_send.hex())
             #print(param_send)
-            ser.close()
+            #sleep(5)
+            print(b'\x16')
+            ser.write(b'\x16')
+            #print(param_send.hex())
+            #ser.write(param_send)
         else:
             print("No Data")
+            
+        ser.close()
         
 def read_param():
     
@@ -100,24 +109,34 @@ def read_param():
             # Need to write the command that enables the reading of data which is sent to transmitter
             ser.write(echo)
             #print(echo)
-            sleep(20)
-            vals = ser.read(46)
+            sleep(5)
+            print(ser.read(46))
             #print(vals)
             #bytesToRead = ser.inWaiting()
             ser.close()
             
+    
 def status():
-    try:
-        for i in serial.tools.liist_ports.comports():
-            if(i.device =="COM5"):
-                port_val = i.device
-                print("Device Connected")
-                messagebox.showinfo(title="Connection Status", message='Device Connected')
+    #for val in serial.tools.list_ports.comports():
+    #print(serial.tools.list_ports()
+    ports = list_ports.comports()
+    com_test = 'COM5'
+    for port in ports:
+        print(str(port)[slice(0,4)])
+        val = str(port)[slice(0,4)]
+        if(val != com_test):
+            continue
+            
+        elif(val == com_test):
+            break
         
-    except:
+    if(val == com_test):    
+        print("Device Connected")
+        messagebox.showinfo(title="Connection Status", message='Device Connected')
+    
+    else:
         print("Device Not Connected")
         messagebox.showinfo(title="Connection Status", message='Device Not Connected')
 
-            
         
         
